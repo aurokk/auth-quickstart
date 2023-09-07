@@ -4,10 +4,19 @@ services:
     ports:
       - "20000:80"
   identity:
-    image: aurokk/identity:083df6efeeb73321a4a9002746391f18fc221d37
+    image: aurokk/identity:bc45ed0d75952f6b2a9ceb30ac53b551379e3c60
+    environment:
+      AUTH_URL: "http://auth:80"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
+      ASPNETCORE_URLS: "https://+"
     ports:
-      - "20010:80"
+      - "20010:443"
+    volumes:
+      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
   identity-ui:
-    image: aurokk/identity-ui:820fd97356bff107a383274bd7ee0f4d18309b7e
+    image: aurokk/identity-ui:9a13141518d4ba1266c84f301504ac1083677008
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: "https://localhost:20010"
     ports:
       - "20020:3000"
