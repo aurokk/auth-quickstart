@@ -1,22 +1,64 @@
+version: "3.9"
 services:
   auth:
-    image: aurokk/auth:fb25fbb6757e83285fe1b03bff0acd47449e0c1c
-    ports:
-      - "20000:80"
-  identity:
-    image: aurokk/identity:bc45ed0d75952f6b2a9ceb30ac53b551379e3c60
+    image: aurokk/auth:42d120e7407ba052c8c52863949e07eee714984b
     environment:
-      AUTH_URL: "http://auth:80"
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
-      ASPNETCORE_URLS: "https://+"
+      ASPNETCORE_URLS: "http://+;https://+"
+    ports:
+      - "20000:443"
+    volumes:
+      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+  identity-db:
+    image: postgres
+    restart: no
+    environment:
+      POSTGRES_DB: identity
+      POSTGRES_USER: identity
+      POSTGRES_PASSWORD: identity
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "20012:5432"
+    volumes:
+      - identity:/var/lib/postgresql/data
+  identity-migrator:
+    image: aurokk/identity:521950ae663e58074a00ffc364a5136f6cd32ecd
+    depends_on:
+      identity-db:
+        condition: service_healthy
+    restart: no
+    environment:
+      MODE: MIGRATOR
+      Database__ConnectionString: "Host=identity-db;Port=5432;Username=identity;Password=identity;Database=identity;"
+    volumes:
+      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+  identity:
+    image: aurokk/identity:521950ae663e58074a00ffc364a5136f6cd32ecd
+    depends_on:
+      identity-migrator:
+        condition: service_completed_successfully
+    restart: no
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
+      ASPNETCORE_URLS: "http://+;https://+"
+      MODE: WEB
+      Auth__BaseUrl: "http://auth:80"
+      Database__ConnectionString: "Host=identity-db;Port=5432;Username=identity;Password=identity;Database=identity;"
     ports:
       - "20010:443"
     volumes:
       - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
   identity-ui:
-    image: aurokk/identity-ui:9a13141518d4ba1266c84f301504ac1083677008
+    image: aurokk/identity-ui:80abd24b8017fc7993f41c87285078941c649243
     environment:
       NEXT_PUBLIC_API_BASE_URL: "https://localhost:20010"
     ports:
       - "20020:3000"
+volumes:
+  identity:
