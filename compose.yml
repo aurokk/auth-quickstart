@@ -60,5 +60,18 @@ services:
       NEXT_PUBLIC_API_BASE_URL: "https://localhost:20010"
     ports:
       - "20020:3000"
+  protected-resource-csharp:
+    image: aurokk/protected-resource-csharp:c332953884da70e6a4b6600d8c97c20173b98bae
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
+      ASPNETCORE_URLS: "http://+;https://+"
+      Auth__BaseUrl: "http://auth:80"
+      Auth__IssuerUrl__0: "https://auth:80"
+      Auth__IssuerUrl__1: "https://localhost:20000"
+    ports:
+      - "20030:443"
+    volumes:
+      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
 volumes:
   identity:
