@@ -1,11 +1,12 @@
 version: "3.9"
 services:
   auth:
-    image: aurokk/auth:42d120e7407ba052c8c52863949e07eee714984b
+    image: aurokk/auth:23bc1f009003506f84fdba144ee8b4f0da78998d
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
       ASPNETCORE_URLS: "http://+;https://+"
+      IdentityUI__BaseUrl: "http://localhost:20020"
     ports:
       - "20000:443"
     volumes:
