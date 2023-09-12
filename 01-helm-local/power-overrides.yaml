@@ -1,0 +1,29 @@
+env:
+  Database__ConnectionString: "Host=power-postgresql;Port=5432;Username=power;Password=power;Database=power;"
+  Auth__BaseUrl: "https://localhost:20000"
+
+ingress:
+  enabled: true
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: selfsigned-issuer 
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: power.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: power-local-tls
+      hosts:
+        - power.local
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: "power"
+        password: "power"
+        database: "power"
