@@ -1,5 +1,6 @@
 env:
-  NEXT_PUBLIC_API_BASE_URL: "https://power.local"
+  NEXT_PUBLIC_POWER_PUBLIC_BASE_URL: "https://power.local"
+  NEXT_PUBLIC_DENJI_PUBLIC_BASE_URL: "https://denji.local"
 
 ingress:
   enabled: true
@@ -9,11 +10,11 @@ ingress:
     cert-manager.io/cluster-issuer: selfsigned-issuer 
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: power-ui.local
+    - host: cosmo.local
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: power-ui-local-tls
+    - secretName: cosmo-local-tls
       hosts:
-        - power-ui.local
+        - cosmo.local

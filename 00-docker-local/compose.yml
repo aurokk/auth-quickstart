@@ -1,23 +1,57 @@
 version: "3.9"
 services:
-  auth:
-    image: aurokk/auth:23bc1f009003506f84fdba144ee8b4f0da78998d
+
+  # denji
+  denji-db:
+    image: postgres
+    restart: no
+    environment:
+      POSTGRES_DB: denji
+      POSTGRES_USER: denji
+      POSTGRES_PASSWORD: denji
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "20012:5432"
+    volumes:
+      - denji-db:/var/lib/postgresql/data
+
+  denji-migrator:
+    image: yaiam/denji:5f018c5db44ed2b0b9bb1a7bed3830c22b82c538
+    depends_on:
+      denji-db:
+        condition: service_healthy
+    restart: no
+    environment:
+      MODE: MIGRATOR
+      Database__ConnectionString: "Host=denji-db;Port=5432;Username=denji;Password=denji;Database=denji;"
+    volumes:
+      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+
+  denji:
+    image: yaiam/denji:5f018c5db44ed2b0b9bb1a7bed3830c22b82c538
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
       ASPNETCORE_URLS: "http://+;https://+"
-      IdentityUI__BaseUrl: "http://localhost:20020"
+      Cors__Origins__0: "http://localhost:20020"
+      Cosmo__BaseUrl: "http://localhost:20020"
     ports:
       - "20000:443"
     volumes:
       - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
-  identity-db:
+
+  # power
+  power-db:
     image: postgres
     restart: no
     environment:
-      POSTGRES_DB: identity
-      POSTGRES_USER: identity
-      POSTGRES_PASSWORD: identity
+      POSTGRES_DB: power
+      POSTGRES_USER: power
+      POSTGRES_PASSWORD: power
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
@@ -27,52 +61,61 @@ services:
       - "20012:5432"
     volumes:
       - identity:/var/lib/postgresql/data
-  identity-migrator:
-    image: aurokk/identity:521950ae663e58074a00ffc364a5136f6cd32ecd
+
+  power-migrator:
+    image: yaiam/power:2410621e73b7e66bbc47aa7a0c9bed6a8b95e3d1
     depends_on:
-      identity-db:
+      power-db:
         condition: service_healthy
     restart: no
     environment:
       MODE: MIGRATOR
-      Database__ConnectionString: "Host=identity-db;Port=5432;Username=identity;Password=identity;Database=identity;"
+      Database__ConnectionString: "Host=power-db;Port=5432;Username=power;Password=power;Database=power;"
     volumes:
       - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
-  identity:
-    image: aurokk/identity:521950ae663e58074a00ffc364a5136f6cd32ecd
+
+  power:
+    image: yaiam/power:2410621e73b7e66bbc47aa7a0c9bed6a8b95e3d1
     depends_on:
       identity-migrator:
         condition: service_completed_successfully
-    restart: no
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
       ASPNETCORE_URLS: "http://+;https://+"
+      Auth__BaseUrl: "http://denji:80"
+      Cors__Origins__0: "http://localhost:20020"
+      Database__ConnectionString: "Host=power-db;Port=5432;Username=power;Password=power;Database=power;"
       MODE: WEB
-      Auth__BaseUrl: "http://auth:80"
-      Database__ConnectionString: "Host=identity-db;Port=5432;Username=identity;Password=identity;Database=identity;"
     ports:
       - "20010:443"
     volumes:
       - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
-  identity-ui:
-    image: aurokk/identity-ui:80abd24b8017fc7993f41c87285078941c649243
+
+  # cosmo
+  cosmo:
+    image: yaiam/cosmo:278d78e8fc090c5d3e6b445e533cd4e65ed083ac
     environment:
-      NEXT_PUBLIC_API_BASE_URL: "https://localhost:20010"
+      NEXT_PUBLIC_POWER_PUBLIC_BASE_URL: "https://localhost:20010"
+      NEXT_PUBLIC_DENJI_PUBLIC_BASE_URL: "https://localhost:20000"
     ports:
       - "20020:3000"
-  protected-resource-csharp:
-    image: aurokk/protected-resource-csharp:c332953884da70e6a4b6600d8c97c20173b98bae
+
+  # beam
+  beam:
+    image: yaiam/beam:69ca7ce45ce32d4c8219b9b3fdd347741a787b9d
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
       ASPNETCORE_URLS: "http://+;https://+"
-      Auth__BaseUrl: "http://auth:80"
-      Auth__IssuerUrl__0: "https://auth:80"
+      Auth__BaseUrl: "http://denji:80"
+      Auth__IssuerUrl__0: "https://denji:80"
       Auth__IssuerUrl__1: "https://localhost:20000"
     ports:
       - "20030:443"
     volumes:
       - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+
 volumes:
-  identity:
+  denji-db:
+  power-db:

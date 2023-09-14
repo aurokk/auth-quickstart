@@ -31,14 +31,14 @@ helm upgrade -f power-overrides.yaml power /Users/dk/Repos/yaiam/charts/charts/p
 helm uninstall power
 ```
 
-### power ui
+### cosmo
 ```
-helm install -f power-ui-overrides.yaml power-ui /Users/dk/Repos/yaiam/charts/charts/power-ui
-helm upgrade -f power-ui-overrides.yaml power-ui /Users/dk/Repos/yaiam/charts/charts/power-ui
-helm uninstall power-ui
+helm install -f cosmo-overrides.yaml cosmo /Users/dk/Repos/yaiam/charts/charts/cosmo
+helm upgrade -f cosmo-overrides.yaml cosmo /Users/dk/Repos/yaiam/charts/charts/cosmo
+helm uninstall cosmo
 ```
 
-### power ui
+### beam
 ```
 helm install -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam
 helm upgrade -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam
