@@ -15,34 +15,38 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "20012:5432"
+      - "20002:5432"
     volumes:
       - denji-db:/var/lib/postgresql/data
 
   denji-migrator:
-    image: yaiam/denji:5f018c5db44ed2b0b9bb1a7bed3830c22b82c538
+    image: "yaiam/denji:${DENJI_TAG}"
     depends_on:
       denji-db:
         condition: service_healthy
     restart: no
     environment:
-      MODE: MIGRATOR
       Database__ConnectionString: "Host=denji-db;Port=5432;Username=denji;Password=denji;Database=denji;"
-    volumes:
-      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+      MODE: MIGRATOR
 
   denji:
-    image: yaiam/denji:5f018c5db44ed2b0b9bb1a7bed3830c22b82c538
+    image: "yaiam/denji:${DENJI_TAG}"
+    restart: no
+    depends_on:
+      denji-migrator:
+        condition: service_completed_successfully
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
-      ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
       ASPNETCORE_URLS: "http://+;https://+"
       Cors__Origins__0: "http://localhost:20020"
       Cosmo__BaseUrl: "http://localhost:20020"
+      Database__ConnectionString: "Host=denji-db;Port=5432;Username=denji;Password=denji;Database=denji;"
+      MODE: WEB
     ports:
       - "20000:443"
     volumes:
-      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+      - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
   # power
   power-db:
@@ -60,28 +64,27 @@ services:
     ports:
       - "20012:5432"
     volumes:
-      - identity:/var/lib/postgresql/data
+      - power-db:/var/lib/postgresql/data
 
   power-migrator:
-    image: yaiam/power:2410621e73b7e66bbc47aa7a0c9bed6a8b95e3d1
+    image: "yaiam/power:${POWER_TAG}"
     depends_on:
       power-db:
         condition: service_healthy
     restart: no
     environment:
-      MODE: MIGRATOR
       Database__ConnectionString: "Host=power-db;Port=5432;Username=power;Password=power;Database=power;"
-    volumes:
-      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+      MODE: MIGRATOR
 
   power:
-    image: yaiam/power:2410621e73b7e66bbc47aa7a0c9bed6a8b95e3d1
+    image: "yaiam/power:${POWER_TAG}"
+    restart: no
     depends_on:
-      identity-migrator:
+      power-migrator:
         condition: service_completed_successfully
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
-      ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
       ASPNETCORE_URLS: "http://+;https://+"
       Auth__BaseUrl: "http://denji:80"
       Cors__Origins__0: "http://localhost:20020"
@@ -90,23 +93,23 @@ services:
     ports:
       - "20010:443"
     volumes:
-      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+      - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
   # cosmo
   cosmo:
-    image: yaiam/cosmo:278d78e8fc090c5d3e6b445e533cd4e65ed083ac
+    image: "yaiam/cosmo:${COSMO_TAG}"
     environment:
-      NEXT_PUBLIC_POWER_PUBLIC_BASE_URL: "https://localhost:20010"
       NEXT_PUBLIC_DENJI_PUBLIC_BASE_URL: "https://localhost:20000"
+      NEXT_PUBLIC_POWER_PUBLIC_BASE_URL: "https://localhost:20010"
     ports:
       - "20020:3000"
 
   # beam
   beam:
-    image: yaiam/beam:69ca7ce45ce32d4c8219b9b3fdd347741a787b9d
+    image: "yaiam/beam:${BEAM_TAG}"
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
-      ASPNETCORE_Kestrel__Certificates__Default__Password: localhost
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
       ASPNETCORE_URLS: "http://+;https://+"
       Auth__BaseUrl: "http://denji:80"
       Auth__IssuerUrl__0: "https://denji:80"
@@ -114,7 +117,7 @@ services:
     ports:
       - "20030:443"
     volumes:
-      - /Users/dk/.aspnet/https/localhost.pfx:/https/localhost.pfx
+      - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
 volumes:
   denji-db:
