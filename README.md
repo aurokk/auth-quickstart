@@ -37,3 +37,10 @@ helm install -f power-ui-overrides.yaml power-ui /Users/dk/Repos/yaiam/charts/ch
 helm upgrade -f power-ui-overrides.yaml power-ui /Users/dk/Repos/yaiam/charts/charts/power-ui
 helm uninstall power-ui
 ```
+
+### power ui
+```
+helm install -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam
+helm upgrade -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam
+helm uninstall beam
+```

@@ -1,6 +1,7 @@
 env:
   Database__ConnectionString: "Host=power-postgresql;Port=5432;Username=power;Password=power;Database=power;"
-  Auth__BaseUrl: "https://localhost:20000"
+  Auth__BaseUrl: "http://denji"
+  Cors__Origins__0: "https://power-ui.local"
 
 ingress:
   enabled: true

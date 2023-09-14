@@ -1,6 +1,6 @@
 env:
   Database__ConnectionString: "Host=denji-postgresql;Port=5432;Username=denji;Password=denji;Database=denji;"
-  IdentityUI__BaseUrl: "http://localhost:20020"
+  IdentityUI__BaseUrl: "https://power-ui.local"
 
 ingress:
   enabled: true
