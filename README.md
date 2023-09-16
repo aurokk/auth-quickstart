@@ -78,3 +78,7 @@ ssl-сертификаты для доменов перечисленных вы
 1. Установить: `helm install -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam`
 1. Обновить: `helm upgrade -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam`
 1. Удалить: `helm uninstall beam`
+
+## Contributing
+
+Изменения в проекте приветствуются в соответствии с [правилами](https://github.com/yaiam/.github/blob/main/CONTRIBUTING.md).
