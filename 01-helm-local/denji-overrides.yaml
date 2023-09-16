@@ -1,15 +1,14 @@
 env:
   Database__ConnectionString: "Host=denji-postgresql;Port=5432;Username=denji;Password=denji;Database=denji;"
-  IdentityUI__BaseUrl: "https://power-ui.local"
   Cors__Origins__0: "https://cosmo.local"
+  Cosmo__BaseUrl: "https://cosmo.local"
 
 ingress:
   enabled: true
   className: ""
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: selfsigned-issuer 
-    # kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: selfsigned-issuer
   hosts:
     - host: denji.local
       paths:

@@ -33,30 +33,44 @@
 
 ## helm (local)
 
-### denji
+### Dependencies
+
+1. `docker`
+1. `kubernetes`
+1. `helm`
+
+Если вы планируете запускать с предложенными конфигами, то нужно внести изменения в /etc/hosts:
+
 ```
-helm install -f denji-overrides.yaml denji /Users/dk/Repos/yaiam/charts/charts/denji
-helm upgrade -f denji-overrides.yaml denji /Users/dk/Repos/yaiam/charts/charts/denji
-helm uninstall denji
+# yaiam
+127.0.0.1       denji.local
+127.0.0.1       power.local
+127.0.0.1       cosmo.local
+127.0.0.1       beam.local
 ```
 
-### power
-```
-helm install -f power-overrides.yaml power /Users/dk/Repos/yaiam/charts/charts/power
-helm upgrade -f power-overrides.yaml power /Users/dk/Repos/yaiam/charts/charts/power
-helm uninstall power
-```
+Также необходимо перейти в директорию `01-helm-local` прежде, чем исполнять команды.
 
-### cosmo
-```
-helm install -f cosmo-overrides.yaml cosmo /Users/dk/Repos/yaiam/charts/charts/cosmo
-helm upgrade -f cosmo-overrides.yaml cosmo /Users/dk/Repos/yaiam/charts/charts/cosmo
-helm uninstall cosmo
-```
+### Denji
 
-### beam
-```
-helm install -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam
-helm upgrade -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam
-helm uninstall beam
-```
+1. Установить: `helm install -f denji-overrides.yaml denji /Users/dk/Repos/yaiam/charts/charts/denji`
+1. Обновить: `helm upgrade -f denji-overrides.yaml denji /Users/dk/Repos/yaiam/charts/charts/denji`
+1. Удалить: `helm uninstall denji`
+
+### Power
+
+1. Установить: `helm install -f power-overrides.yaml power /Users/dk/Repos/yaiam/charts/charts/power`
+1. Обновить: `helm upgrade -f power-overrides.yaml power /Users/dk/Repos/yaiam/charts/charts/power`
+1. Удалить: `helm uninstall power`
+
+### Cosmo
+
+1. Установить: `helm install -f cosmo-overrides.yaml cosmo /Users/dk/Repos/yaiam/charts/charts/cosmo`
+1. Обновить: `helm upgrade -f cosmo-overrides.yaml cosmo /Users/dk/Repos/yaiam/charts/charts/cosmo`
+1. Удалить: `helm uninstall cosmo`
+
+### Beam
+
+1. Установить: `helm install -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam`
+1. Обновить: `helm upgrade -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam`
+1. Удалить: `helm uninstall beam`
