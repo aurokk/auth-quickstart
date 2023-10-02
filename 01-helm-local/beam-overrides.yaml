@@ -1,7 +1,7 @@
 env:
-  Auth__BaseUrl: "http://denji"
-  Auth__IssuerUrl__0: "http://denji"
-  Auth__IssuerUrl__1: "https://denji.local"
+  Denji__BaseUrl: "http://denji"
+  Denji__IssuerUrl__0: "http://denji"
+  Denji__IssuerUrl__1: "https://denji.local"
 
 ingress:
   enabled: true
