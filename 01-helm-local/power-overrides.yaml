@@ -1,8 +1,12 @@
 env:
-  Database__ConnectionString: "Host=power-postgresql;Port=5432;Username=power;Password=power;Database=power;"
-  Denji__BaseUrl: "http://denji"
-  Cosmo__BaseUrl: "https://cosmo.local"
-  Cors__Origins__0: "https://cosmo.local"
+  - name: "Database__ConnectionString"
+    value: "Host=power-postgresql;Port=5432;Username=power;Password=power;Database=power;"
+  - name: "Denji__BaseUrl"
+    value: "http://denji"
+  - name: "Cosmo__BaseUrl"
+    value: "https://cosmo.local"
+  - name: "Cors__Origins__0"
+    value: "https://cosmo.local"
 
 ingress:
   enabled: true

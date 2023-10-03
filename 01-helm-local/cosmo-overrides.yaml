@@ -1,6 +1,8 @@
 env:
-  NEXT_PUBLIC_POWER_PUBLIC_BASE_URL: "https://power.local"
-  NEXT_PUBLIC_DENJI_PUBLIC_BASE_URL: "https://denji.local"
+  - name: "NEXT_PUBLIC_POWER_PUBLIC_BASE_URL"
+    value: "https://power.local"
+  - name: "NEXT_PUBLIC_DENJI_PUBLIC_BASE_URL"
+    value: "https://denji.local"
 
 ingress:
   enabled: true
