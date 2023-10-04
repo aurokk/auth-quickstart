@@ -55,6 +55,14 @@ ssl-сертификаты для доменов перечисленных вы
 
 Также необходимо перейти в директорию `01-helm-local` прежде, чем исполнять команды.
 
+### Yaiam
+
+Это мета-чарт, который позволяет сразу развернуть всю систему, в нём указаны только зависимости
+
+1. Установить: `helm install -f yaiam-overrides.yaml yaiam /Users/dk/Repos/yaiam/charts/charts/yaiam`
+1. Обновить: `helm upgrade -f yaiam-overrides.yaml yaiam /Users/dk/Repos/yaiam/charts/charts/yaiam`
+1. Удалить: `helm uninstall yaiam`
+
 ### Denji
 
 1. Установить: `helm install -f denji-overrides.yaml denji /Users/dk/Repos/yaiam/charts/charts/denji`
@@ -79,12 +87,6 @@ ssl-сертификаты для доменов перечисленных вы
 1. Обновить: `helm upgrade -f beam-overrides.yaml beam /Users/dk/Repos/yaiam/charts/charts/beam`
 1. Удалить: `helm uninstall beam`
 1. Удалить: `helm uninstall cosmo`
-
-### Yaiam
-
-1. Установить: `helm install -f yaiam-overrides.yaml yaiam /Users/dk/Repos/yaiam/charts/charts/yaiam`
-1. Обновить: `helm upgrade -f yaiam-overrides.yaml yaiam /Users/dk/Repos/yaiam/charts/charts/yaiam`
-1. Удалить: `helm uninstall yaiam`
 
 ## Contributing
 
