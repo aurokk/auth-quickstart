@@ -7,9 +7,8 @@
 ### Для запуска в докере необходимо:
 1. Убедиться, что порты `20000—20100` свободны
 1. Перейти в директорию `00-docker-local`
-1. Создать файл `.env.local` (скопировать `.env` и назвать его `.env.local`)
-1. Опционально. Указать теги образов приложений (`DENJI_TAG`, `POWER_TAG`, ...)
-1. Указать абсолютный путь до ssl-сертификата для домена `localhost` (`LOCALHOST_PFX_PATH`) и пароль (`LOCALHOST_PFX_PASSWORD`)
+1. Опционально. Указать в `.env` теги образов приложений (`DENJI_TAG`, `POWER_TAG`, ...)
+1. Указать в `.env` абсолютный путь до ssl-сертификата для домена `localhost` (`LOCALHOST_PFX_PATH`) и пароль (`LOCALHOST_PFX_PASSWORD`)
 1. Запустить compose `docker compose --env-file .env.local up -d`
 
 ### Для проверки работоспособности (oauth 2.0 implicit flow):
@@ -26,6 +25,9 @@
 Один из вариантов — использовать dotnet sdk:
 1. Создать сертификат и экспортировать его: `dotnet dev-certs https -ep /Users/dk/.aspnet/https/localhost.pfx -p localhost`
 1. Сделать сертификат доверенным: `dotnet dev-certs https --trust`
+1. Достать приватный ключ из pfx: `openssl pkcs12 -in [yourfile.pfx] -nocerts -out [yourfile.key]`
+1. Расшифровать приватный ключ: `openssl rsa -in [yourfile.key] -out [yourfile-decrypted.key]`
+1. Достать сертификат из pfx: `openssl pkcs12 -in [yourfile.pfx] -clcerts -nokeys -out [yourfile.crt]`
 
 В случае проблем, можно удалить сертификаты и затем выполнить команды выше заново: `dotnet dev-certs https --clean`
 

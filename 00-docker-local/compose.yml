@@ -108,14 +108,23 @@ services:
     volumes:
       - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
+  # cosmo-https-proxy
+  cosmo-https-proxy:
+    image: "nginx:latest"
+    volumes:
+      - "./cosmo_proxy.conf:/etc/nginx/conf.d/default.conf"
+      - "${LOCALHOST_CRT_PATH}:/etc/nginx/conf.d/cert.pem"
+      - "${LOCALHOST_KEY_PATH}:/etc/nginx/conf.d/key.pem"
+    ports:
+      - "20020:443"
+      - "20021:80"
+
   # cosmo
   cosmo:
     image: "yaiam/cosmo:${COSMO_TAG}"
     environment:
       NEXT_PUBLIC_DENJI_PUBLIC_BASE_URL: "https://localhost:20000"
       NEXT_PUBLIC_POWER_PUBLIC_BASE_URL: "https://localhost:20010"
-    ports:
-      - "20020:3000"
 
   # beam
   beam:
