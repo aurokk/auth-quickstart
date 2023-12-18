@@ -38,13 +38,19 @@ services:
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
-      ASPNETCORE_URLS: "http://+;https://+"
+      PrivateApi__HttpPort: 20006
+      PublicApi__HttpPort: 20005
+      PrivateApi__HttpsPort: 20001
+      PublicApi__HttpsPort: 20000
       Cors__Origins__0: "http://localhost:20020"
       Cosmo__BaseUrl: "http://localhost:20020"
       Database__ConnectionString: "Host=denji-db;Port=5432;Username=denji;Password=denji;Database=denji;"
       MODE: WEB
     ports:
-      - "20000:443"
+      - "20000:20000"
+      - "20001:20001"
+      - "20005:20005"
+      - "20006:20006"
     volumes:
       - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
@@ -85,14 +91,20 @@ services:
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
-      ASPNETCORE_URLS: "http://+;https://+"
+      PrivateApi__HttpPort: 20016
+      PublicApi__HttpPort: 20015
+      PrivateApi__HttpsPort: 20011
+      PublicApi__HttpsPort: 20010
       Cors__Origins__0: "http://localhost:20020"
       Cosmo__BaseUrl: "http://localhost:20020"
       Database__ConnectionString: "Host=power-db;Port=5432;Username=power;Password=power;Database=power;"
-      Denji__BaseUrl: "http://denji:80"
+      Denji__BaseUrl: "http://denji:20006"
       MODE: WEB
     ports:
-      - "20010:443"
+      - "20010:20010"
+      - "20011:20011"
+      - "20015:20015"
+      - "20016:20016"
     volumes:
       - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
@@ -112,9 +124,8 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
       ASPNETCORE_URLS: "http://+;https://+"
-      Denji__BaseUrl: "http://denji:80"
-      Denji__IssuerUrl__0: "https://denji:80"
-      Denji__IssuerUrl__1: "https://localhost:20000"
+      Auth__BaseUrl: "http://denji:20005"
+      Auth__IssuerUrl__0: "https://localhost:20000"
     ports:
       - "20030:443"
     volumes:

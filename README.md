@@ -13,7 +13,7 @@
 1. Запустить compose `docker compose --env-file .env.local up -d`
 
 ### Для проверки работоспособности (oauth 2.0 implicit flow):
-1. Создать тестовые данные: `curl -IX POST https://localhost:20000/api/private/configuration/seed`
+1. Создать тестовые данные: `curl -IX POST https://localhost:20001/api/private/configuration/seed`
 1. Запустить в [инкогнито-]браузере процесс авторизации, открыв ссылку: `https://localhost:20000/connect/authorize?client_id=implicit&redirect_uri=http%3A%2F%2Flocalhost%3A10000&response_type=token&scope=beam.read&state=abc&nonce=xyz`
 1. После регистрации и согласия на доступ к данным получаем в адресной строке access_token
 
