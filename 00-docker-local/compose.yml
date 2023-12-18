@@ -42,8 +42,8 @@ services:
       PublicApi__HttpPort: 20005
       PrivateApi__HttpsPort: 20001
       PublicApi__HttpsPort: 20000
-      Cors__Origins__0: "http://localhost:20020"
-      Cosmo__BaseUrl: "http://localhost:20020"
+      Cors__Origins__0: "https://localhost:20020"
+      Cosmo__BaseUrl: "https://localhost:20020"
       Database__ConnectionString: "Host=denji-db;Port=5432;Username=denji;Password=denji;Database=denji;"
       MODE: WEB
     ports:
@@ -95,8 +95,8 @@ services:
       PublicApi__HttpPort: 20015
       PrivateApi__HttpsPort: 20011
       PublicApi__HttpsPort: 20010
-      Cors__Origins__0: "http://localhost:20020"
-      Cosmo__BaseUrl: "http://localhost:20020"
+      Cors__Origins__0: "https://localhost:20020"
+      Cosmo__BaseUrl: "https://localhost:20020"
       Database__ConnectionString: "Host=power-db;Port=5432;Username=power;Password=power;Database=power;"
       Denji__PrivateApi__BaseUrl: "http://denji:20006"
       MODE: WEB
