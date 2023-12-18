@@ -98,7 +98,7 @@ services:
       Cors__Origins__0: "http://localhost:20020"
       Cosmo__BaseUrl: "http://localhost:20020"
       Database__ConnectionString: "Host=power-db;Port=5432;Username=power;Password=power;Database=power;"
-      Denji__BaseUrl: "http://denji:20006"
+      Denji__PrivateApi__BaseUrl: "http://denji:20006"
       MODE: WEB
     ports:
       - "20010:20010"
@@ -132,11 +132,13 @@ services:
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/localhost.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${LOCALHOST_PFX_PASSWORD}
-      ASPNETCORE_URLS: "http://+;https://+"
-      Auth__BaseUrl: "http://denji:20005"
-      Auth__IssuerUrl__0: "https://localhost:20000"
+      PublicApi__HttpPort: 20031
+      PublicApi__HttpsPort: 20030
+      Denji__PublicApi__BaseUrl: "http://denji:20005"
+      DenjiMiddleware__IssuerUrl__0: "https://localhost:20000"
     ports:
-      - "20030:443"
+      - "20031:20031"
+      - "20030:20030"
     volumes:
       - "${LOCALHOST_PFX_PATH}:/https/localhost.pfx"
 
