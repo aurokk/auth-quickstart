@@ -1,6 +1,6 @@
 env:
   - name: "Database__ConnectionString"
-    value: "Host=denji-postgresql;Port=5432;Username=denji;Password=denji;Database=denji;"
+    value: "Host=yaiam-denji-postgresql;Port=5432;Username=denji;Password=denji;Database=denji;"
   - name: "Cors__Origins__0"
     value: "https://cosmo.local"
   - name: "Cosmo__BaseUrl"
@@ -24,6 +24,7 @@ ingress:
 
 postgresql:
   enabled: true
+  nameOverride: denji-postgresql
   global:
     postgresql:
       auth:

@@ -1,9 +1,7 @@
 env:
-  - name: "Denji__BaseUrl"
-    value: "http://denji"
-  - name: "Denji__IssuerUrl__0"
-    value: "http://denji"
-  - name: "Denji__IssuerUrl__1"
+  - name: "Denji__PublicApi__BaseUrl"
+    value: "http://denji:10001"
+  - name: "DenjiMiddleware__IssuerUrl__0"
     value: "https://denji.local"
 
 ingress:

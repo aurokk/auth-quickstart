@@ -90,6 +90,12 @@ ssl-сертификаты для доменов перечисленных вы
 1. Удалить: `helm uninstall beam`
 1. Удалить: `helm uninstall cosmo`
 
+### Для проверки работоспособности (oauth 2.0 implicit flow):
+1. `kubectl port-forward pod/yaiam-denji-648c96649b-rfhwd 20001:10000`
+1. Создать тестовые данные: `curl -IX POST http://localhost:20001/api/private/configuration/seed`
+1. Запустить в [инкогнито-]браузере процесс авторизации, открыв ссылку: `https://denji.local/connect/authorize?client_id=implicit&redirect_uri=http%3A%2F%2Flocalhost%3A10000&response_type=token&scope=beam.read&state=abc&nonce=xyz`
+1. После регистрации и согласия на доступ к данным получаем в адресной строке access_token
+
 ## Contributing
 
 Изменения в проекте приветствуются в соответствии с [правилами](https://github.com/yaiam/.github/blob/main/CONTRIBUTING.md).
